@@ -1,20 +1,49 @@
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import { View, Text, ActivityIndicator, FlatList } from 'react-native';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import getResource from '../../services/get-resource';
 
 const PeopleView = () => {
-  const { data, isLoading, isFetching } = useQuery({
+  const {
+      data,
+      isLoading,
+      error,
+      isError,
+      hasNextPage,
+      fetchNextPage,
+    } = useInfiniteQuery({
     queryKey: ['/people'],
-    queryFn: getResource('/people'),
+    queryFn: ({ pageParam, queryKey }) => getResource(`${queryKey}?page=${pageParam}`),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const cursor = lastPage.data.next;
+
+      if (!cursor) return null;
+
+      return Number(/\d/.exec(cursor));
+    },
    });
 
-   if (isLoading || isFetching)
+   if (isLoading)
     return <ActivityIndicator />;
+
+   const handleGetNextPage = () => {
+    if (hasNextPage && !isLoading) {
+      fetchNextPage();
+    }
+   }
 
   return (
     <View>
-      <Text>{!!data?.data && JSON.stringify(data.data, null, 2)}</Text>
+      <FlatList
+        data={data?.pages.flatMap(item => item.data.results)}
+        renderItem={({ item }) => {
+            return <Text>{JSON.stringify(item, null, 2)}</Text>
+          }
+        }
+        keyExtractor={item => item.name}
+        onEndReached={handleGetNextPage}
+      />
     </View>
   )
 }
