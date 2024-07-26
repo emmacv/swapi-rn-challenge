@@ -1,11 +1,32 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { People } from '../../types/people'
+import styled from 'styled-components/native';
 
-const Card = (person: People) => {
-  return (
-    <Text>name: {person.name}</Text>
-  )
+
+type Props = {
+  children: React.ReactNode;
 }
 
-export default Card
+const Card = ({ children }: Props) => {
+  return (
+    <View style={styles.container}>
+      {children}
+    </View>
+  );
+};
+
+export default Card;
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 10,
+    marginVertical: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    borderStyle: 'solid',
+    borderColor: '#555555',
+    borderWidth: 2,
+    backgroundColor: '#73737997'
+  }
+});
