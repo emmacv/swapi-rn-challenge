@@ -1,6 +1,6 @@
 export interface Result<R extends unknown> {
-  count:    number;
-  next:     string;
+  count: number;
+  next: string;
   previous: null;
-  results:  R[];
+  results: R[];
 }
