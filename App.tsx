@@ -2,9 +2,9 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 
-import PeopleView from "./app/views/people";
-import PlanetsView from "./app/views/planets";
-import SpaceshipView from "./app/views/spaceships";
+import PeopleView from "./src/views/people";
+import PlanetsView from "./src/views/planets";
+import SpaceshipView from "./src/views/spaceships";
 import { Text } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

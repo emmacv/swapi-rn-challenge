@@ -1,9 +1,10 @@
 import React from "react";
-import { Text, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import { Text, ActivityIndicator, FlatList } from "react-native";
 import Card from "../../components/card";
 import Container from "../../components/container";
 import useSwapi from "../../hooks/useSwapi";
 import { Planets } from "../../types/planets";
+import globalTheme from "../../theme";
 
 const PeopleView = () => {
   const { data, isLoading, isError, hasNextPage, fetchNextPage } =
@@ -19,18 +20,18 @@ const PeopleView = () => {
 
   return (
     <Container title="Planets">
-      {isError && <Text style={styles.text}>Error Fetching data</Text>}
+      {isError && <Text style={globalTheme.text}>Error Fetching data</Text>}
       <FlatList
         data={data?.pages.flatMap(item => item.data.results)}
         renderItem={({ item: planet }) => {
           return (
             <Card>
-              <Text style={styles.text}>name: {planet.name}</Text>
-              <Text style={styles.text}>Population: {planet.population}</Text>
-              <Text style={styles.text}>
+              <Text style={globalTheme.text}>name: {planet.name}</Text>
+              <Text style={globalTheme.text}>Population: {planet.population}</Text>
+              <Text style={globalTheme.text}>
                 Rotation period: {planet.rotation_period}
               </Text>
-              <Text style={styles.text}>Diameter: {planet.diameter}</Text>
+              <Text style={globalTheme.text}>Diameter: {planet.diameter}</Text>
             </Card>
           );
         }}
@@ -45,9 +46,3 @@ const PeopleView = () => {
 };
 
 export default PeopleView;
-
-const styles = StyleSheet.create({
-  text: {
-    color: "#ffffffda",
-  },
-});
