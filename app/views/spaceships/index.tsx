@@ -1,26 +1,49 @@
-import { View, Text, ActivityIndicator } from 'react-native'
-import React from 'react'
-import getResource from '../../services/get-resource';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import React from "react";
+import { Text, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import Card from "../../components/card";
+import Container from "../../components/container";
+import useSwapi from "../../hooks/useSwapi";
+import { Starships } from "../../types/starshipts";
 
-const SpaceshipView = () => {
-  const { data, isLoading, isFetching } = useInfiniteQuery({
-    queryKey: ['/starships'],
-    queryFn: ({ pageParam, queryKey }) => getResource(`/${queryKey}?page=${pageParam}`),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => 1,
-  });
+const PeopleView = () => {
+  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
+    useSwapi<Starships>("starships");
 
-  if (isLoading || isFetching)
-    return <ActivityIndicator />;
+  if (isLoading) return <ActivityIndicator />;
 
-  data?.pages[0]().then(console.log);
+  const handleGetNextPage = () => {
+    if (hasNextPage && !isLoading) {
+      fetchNextPage();
+    }
+  };
 
   return (
-    <View>
-      <Text>{JSON.stringify(data?.pages.at(1)?.data, null, 2)}</Text>
-    </View>
-  )
-}
+    <Container title="Starships">
+      {isError && <Text style={styles.text}>Error Fetching data</Text>}
+      <FlatList
+        data={data?.pages.flatMap(item => item.data.results)}
+        renderItem={({ item: person }) => (
+          <Card>
+            <Text style={styles.text}>Name: {person.name}</Text>
+            <Text style={styles.text}>Cargo capacity: {person.cargo_capacity}</Text>
+            <Text style={styles.text}>Cost: {person.cost_in_credits}</Text>
+            <Text style={styles.text}>length: {person.length}</Text>
+          </Card>
+        )}
+        keyExtractor={item => item.name}
+        onEndReached={handleGetNextPage}
+        contentContainerStyle={{
+          padding: 20,
+        }}
+      />
+    </Container>
+  );
+};
 
-export default SpaceshipView
+export default PeopleView;
+
+const styles = StyleSheet.create({
+  text: {
+    color: "#ffffffda",
+  },
+});

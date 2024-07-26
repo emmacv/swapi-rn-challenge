@@ -1,51 +1,48 @@
-import React from 'react';
-import { View, Text, ActivityIndicator, FlatList } from 'react-native';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import getResource from '../../services/get-resource';
+import React from "react";
+import { Text, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import Card from "../../components/card";
+import Container from "../../components/container";
+import useSwapi from "../../hooks/useSwapi";
+import { People } from "../../types/people";
 
 const PeopleView = () => {
-  const {
-      data,
-      isLoading,
-      error,
-      isError,
-      hasNextPage,
-      fetchNextPage,
-    } = useInfiniteQuery({
-    queryKey: ['/people'],
-    queryFn: ({ pageParam, queryKey }) => getResource(`${queryKey}?page=${pageParam}`),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      const cursor = lastPage.data.next;
+  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
+    useSwapi<People>("people");
 
-      if (!cursor) return null;
+  if (isLoading) return <ActivityIndicator />;
 
-      return Number(/\d/.exec(cursor));
-    },
-   });
-
-   if (isLoading)
-    return <ActivityIndicator />;
-
-   const handleGetNextPage = () => {
+  const handleGetNextPage = () => {
     if (hasNextPage && !isLoading) {
       fetchNextPage();
     }
-   }
+  };
 
   return (
-    <View>
+    <Container title="People">
+      {isError && <Text style={styles.text}>Error Fetching data</Text>}
       <FlatList
         data={data?.pages.flatMap(item => item.data.results)}
-        renderItem={({ item }) => {
-            return <Text>{JSON.stringify(item, null, 2)}</Text>
-          }
-        }
+        renderItem={({ item: person }) => (
+          <Card>
+            <Text style={styles.text}>Name: {person.name}</Text>
+            <Text style={styles.text}>Gender: {person.gender}</Text>
+            <Text style={styles.text}>Height: {person.height}</Text>
+          </Card>
+        )}
         keyExtractor={item => item.name}
         onEndReached={handleGetNextPage}
+        contentContainerStyle={{
+          padding: 20,
+        }}
       />
-    </View>
-  )
-}
+    </Container>
+  );
+};
 
-export default PeopleView
+export default PeopleView;
+
+const styles = StyleSheet.create({
+  text: {
+    color: "#ffffffda",
+  },
+});
