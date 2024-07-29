@@ -4,10 +4,13 @@ import Card from "../../components/card";
 import useSwapi from "../../hooks/useSwapi";
 import { Starships } from "../../types/starshipts";
 import globalTheme from "../../theme";
+import { ViewProps } from "../../types/routes";
 
-const PeopleView = () => {
-  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
-    useSwapi<Starships>("starships");
+type Props = ViewProps<"Spaceships">;
+
+const SpaceshipsView = ({ route }: Props) => {
+  const { data, isLoading, hasNextPage, fetchNextPage } =
+    useSwapi<Starships>(route.params.name);
 
   if (isLoading) return <ActivityIndicator />;
 
@@ -39,4 +42,4 @@ const PeopleView = () => {
   );
 };
 
-export default PeopleView;
+export default SpaceshipsView;

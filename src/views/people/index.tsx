@@ -9,7 +9,7 @@ import { ViewProps } from "../../types/routes";
 type Props = ViewProps<"People">;
 
 const PeopleView = ({ route }: Props) => {
-  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
+  const { data, isLoading, hasNextPage, fetchNextPage } =
     useSwapi<People>(route.params.name);
 
   if (isLoading) return <ActivityIndicator />;

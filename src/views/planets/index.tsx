@@ -6,11 +6,11 @@ import { Planets } from "../../types/planets";
 import globalTheme from "../../theme";
 import { ViewProps } from "../../types/routes";
 
-type Props = ViewProps<"People">;
+type Props = ViewProps<"Planets">;
 
-const PeopleView = () => {
-  const { data, isLoading, isError, hasNextPage, fetchNextPage } =
-    useSwapi<Planets>("planets");
+const PlanetsScreen = ({ route }: Props) => {
+  const { data, isLoading, hasNextPage, fetchNextPage } =
+    useSwapi<Planets>(route.params.name);
 
   if (isLoading) return <ActivityIndicator />;
 
@@ -46,4 +46,4 @@ const PeopleView = () => {
   );
 };
 
-export default PeopleView;
+export default PlanetsScreen;

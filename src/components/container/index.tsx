@@ -10,9 +10,7 @@ type Props = {
 const Container = ({ children, title }: Props) => (
   <ImageBackground
     source={backgroundImage}
-    style={{
-      flex: 1,
-    }}
+    style={styles.container}
   >
     <Text style={styles.text}>{title}</Text>
     {children}
@@ -20,6 +18,9 @@ const Container = ({ children, title }: Props) => (
 );
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   text: {
     color: "#fff",
     fontSize: 40,
