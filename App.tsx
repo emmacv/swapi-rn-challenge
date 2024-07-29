@@ -5,9 +5,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import PeopleView from "./src/views/people";
 import PlanetsView from "./src/views/planets";
 import SpaceshipView from "./src/views/spaceships";
-import { Text } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Container from "./src/components/container";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ const Navigations = (): React.JSX.Element => (
       name="People"
       component={PeopleView}
       options={{
-        tabBarIcon: () => <Text>People</Text>,
+        tabBarIcon: () => <Ionicons name="people" size={25} />,
       }}
       initialParams={{ name: "people" }}
     />
@@ -35,7 +36,7 @@ const Navigations = (): React.JSX.Element => (
       name="Planets"
       component={PlanetsView}
       options={{
-        tabBarIcon: () => <Text>Planets</Text>,
+        tabBarIcon: () => <Ionicons name="planet" size={25} />,
       }}
       initialParams={{ name: "planets" }}
     />
@@ -43,7 +44,7 @@ const Navigations = (): React.JSX.Element => (
       name="Spaceships"
       component={SpaceshipView}
       options={{
-        tabBarIcon: () => <Text>Spaceships</Text>,
+        tabBarIcon: () => <FontAwesome name="space-shuttle" size={25}/>,
       }}
       initialParams={{ name: "starships" }}
     />
