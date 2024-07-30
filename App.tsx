@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Container from "./src/components/container";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { Text } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,35 +18,43 @@ const Navigations = (): React.JSX.Element => (
     sceneContainerStyle={{
       backgroundColor: "transparent",
     }}
-    screenOptions={{
+    screenOptions={({ route }) => ({
       headerShown: false,
       headerStyle: {
         shadowColor: "transparent",
       },
-    }}
+      tabBarStyle: {
+        backgroundColor: "#272727df",
+        borderTopColor: "black",
+        elevation: 0,
+      },
+      tabBarIcon: ({ color }) => {
+        if (route.name === "Spaceships") {
+          return <FontAwesome name="space-shuttle" size={25} color={color} />;
+        }
+
+        const iconName = route.name === "People" ? "people" : "planet";
+
+        return <Ionicons name={iconName} size={25} color={color} />;
+      },
+      tabBarLabel: ({ children, color }) => <Text style={{ color }}>{children}</Text>,
+      tabBarActiveBackgroundColor: "#ebe3e3c8",
+      tabBarActiveTintColor: "#312c2cd6",
+    })}
   >
     <Tab.Screen
       name="People"
       component={PeopleView}
-      options={{
-        tabBarIcon: () => <Ionicons name="people" size={25} />,
-      }}
       initialParams={{ name: "people" }}
     />
     <Tab.Screen
       name="Planets"
       component={PlanetsView}
-      options={{
-        tabBarIcon: () => <Ionicons name="planet" size={25} />,
-      }}
       initialParams={{ name: "planets" }}
     />
     <Tab.Screen
       name="Spaceships"
       component={SpaceshipView}
-      options={{
-        tabBarIcon: () => <FontAwesome name="space-shuttle" size={25}/>,
-      }}
       initialParams={{ name: "starships" }}
     />
   </Tab.Navigator>
