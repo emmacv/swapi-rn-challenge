@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: "bold",
     textAlign: "center",
+    fontFamily: "Roboto-Black",
   },
 });
 
