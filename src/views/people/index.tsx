@@ -1,18 +1,20 @@
 import React from "react";
-import { Text, ActivityIndicator, FlatList } from "react-native";
+import { Text, FlatList, View } from "react-native";
 import Card from "../../components/card";
 import useSwapi from "../../hooks/useSwapi";
 import { People } from "../../types/people";
 import globalTheme from "../../theme";
 import { ViewProps } from "../../types/routes";
+import LoadingTemplate from "../../templates/loading";
 
 type Props = ViewProps<"People">;
 
 const PeopleView = ({ route }: Props) => {
-  const { data, isLoading, hasNextPage, fetchNextPage } =
-    useSwapi<People>(route.params.name);
+  const { data, isLoading, hasNextPage, fetchNextPage } = useSwapi<People>(
+    route.params.name
+  );
 
-  if (isLoading) return <ActivityIndicator />;
+  if (isLoading) return <LoadingTemplate />;
 
   const handleGetNextPage = () => {
     if (hasNextPage && !isLoading) {

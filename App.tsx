@@ -24,7 +24,7 @@ const Navigations = (): React.JSX.Element => (
         shadowColor: "transparent",
       },
       tabBarStyle: {
-        backgroundColor: "#272727df",
+        backgroundColor: "#444444",
         borderTopColor: "black",
         elevation: 0,
       },

@@ -1,10 +1,11 @@
 import React from "react";
-import { Text, ActivityIndicator, FlatList } from "react-native";
+import { Text, FlatList } from "react-native";
 import Card from "../../components/card";
 import useSwapi from "../../hooks/useSwapi";
 import { Planets } from "../../types/planets";
 import globalTheme from "../../theme";
 import { ViewProps } from "../../types/routes";
+import LoadingTemplate from "../../templates/loading";
 
 type Props = ViewProps<"Planets">;
 
@@ -12,7 +13,7 @@ const PlanetsScreen = ({ route }: Props) => {
   const { data, isLoading, hasNextPage, fetchNextPage } =
     useSwapi<Planets>(route.params.name);
 
-  if (isLoading) return <ActivityIndicator />;
+  if (isLoading) return <LoadingTemplate />;
 
   const handleGetNextPage = () => {
     if (hasNextPage && !isLoading) {

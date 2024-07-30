@@ -50,4 +50,3 @@ ios/Pods/
 ios/Pods/**/*/
 ios/build
 ios/swapi*
-ios/swapi.xcodeproj/**/*
