@@ -1,17 +1,34 @@
-/**
- * @format
- */
+import { it, jest, expect } from "@jest/globals";
+import { renderHook, waitFor } from "@testing-library/react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import useSwapi from "../src/hooks/useSwapi";
+import axios from "axios";
 
-import 'react-native';
-import React from 'react';
-import App from '../App';
+jest.mock("axios");
 
-// Note: import explicitly to use the types shipped with jest.
-import {it} from '@jest/globals';
+const queryClient = new QueryClient();
+const mokedAxios = axios as jest.Mocked<typeof axios>;
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+const wrapper = ({ children }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
-it('renders correctly', () => {
-  renderer.create(<App />);
+it("should fetch people data correctly", async () => {
+  const mockData = {
+    data: {
+      previous: null,
+      count: 2,
+      results: [{ name: "Luke Skywalker" }, { name: "Darth Vader" }],
+      next: "https://swapi.dev/api/people/?page=2",
+    },
+  };
+
+  mokedAxios.get.mockResolvedValue(mockData);
+
+  const { result } = renderHook(useSwapi, {
+    wrapper,
+    initialProps: "people",
+  });
+
+  await waitFor(() => expect(result.current.isSuccess).toBe(true));
 });

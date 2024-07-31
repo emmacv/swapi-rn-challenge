@@ -1,9 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import getResource from "../services/get-resource";
-import { People } from "../types/people";
 
 const useSwapi = <R = unknown>(key: string) => {
-  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
+  const result =
     useInfiniteQuery({
       queryKey: [key],
       queryFn: ({ pageParam, queryKey }) =>
@@ -18,7 +17,7 @@ const useSwapi = <R = unknown>(key: string) => {
       },
     });
 
-  return { data, isLoading, error, isError, hasNextPage, fetchNextPage };
+  return result;
 };
 
 export default useSwapi;
